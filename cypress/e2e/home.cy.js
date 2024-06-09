@@ -1,7 +1,7 @@
 describe('Turkish Airlines Home Page Tests', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost/airline-ticket-reservation/home_page.php'); // replace with your actual path
+    cy.visit('http://localhost/airline-ticket-reservation/home_page.php'); 
   });
 
   describe('Navigation Tests', () => {
@@ -86,5 +86,29 @@ describe('Login Functionality Tests', () => {
     cy.url().should('include', 'login_page.php?msg=failed');
     cy.get('.card-body').should('contain', 'Invalid Username/Password');
   });
+
+  describe('Turkish Airlines PNR Tests', () => {
+    it('should navigate to PNR page, enter PNR, and view boarding pass', () => {
+      // Visit home page
+      cy.visit('http://localhost/airline-ticket-reservation/home_page.php'); 
+  
+      // Navigate to Check PNR page
+      cy.get('a.nav-link').contains('Check PNR').click();
+      cy.url().should('include', 'pnrall.php');
+  
+      // Enter PNR and submit
+      cy.get('input[name="pnr"]').type('1669050'); 
+      cy.get('input[type="submit"]').click();
+  
+      // Verify boarding pass page
+      cy.url().should('include', 'pnrcheckall.php');
+      cy.get('h2').should('contain', 'Boarding Pass');
+      cy.get('h4').contains('PNR').parent().should('contain', '1669050'); 
+      cy.get('a.nav-link').contains('Logout').click();
+      cy.url().should('include', 'home_page.php');
+
+    });
+  });
+  
 
 });
