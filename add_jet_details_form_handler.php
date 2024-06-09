@@ -62,7 +62,6 @@
 					else
 					{
 						echo "Submit Error";
-						echo mysqli_error($mysqli);
 						header("location: add_jet_details.php?msg=failed");
 					}
 				}

@@ -52,7 +52,6 @@
 					else
 					{
 						echo "Submit Error";
-						echo mysqli_error();
 						header("location: delete_flight_details.php?msg=failed");
 					}
 				}

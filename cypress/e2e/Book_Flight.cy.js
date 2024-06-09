@@ -103,3 +103,53 @@ describe('Flight Booking Tests', () => {
   });
 
 });
+
+describe('Cancel Booked Tickets Tests', () => {
+
+  beforeEach(() => {
+    // Login as User before running the tests
+    cy.visit('http://localhost/airline-ticket-reservation/login_page.php'); 
+    cy.get('input[name="username"]').type('username'); 
+    cy.get('input[name="password"]').type('usernamepass');
+    cy.get('input[type="submit"]').click();
+    cy.url().should('include', 'customer_homepage.php');
+  });
+
+  it('should navigate to Cancel Booked Tickets page', () => {
+    // Ensure the page is fully loaded
+    cy.wait(2000);
+
+    // Navigate to Cancel Booked Tickets page
+    cy.get('a.nav-link').contains('Print Ticket').click({force: true});
+    cy.url().should('include', 'pnr.php');
+
+    // Fill out the PNR form and submit
+    cy.get('input[name="pnr"]').type('1669050'); 
+    cy.get('input[type="submit"]').click();
+
+    // Navigate to cancel booked tickets page
+    cy.get('a.nav-link').contains('Cancel Booked Tickets').click({force: true});
+    cy.url().should('include', 'cancel_booked_tickets.php');
+  });
+
+  it('should cancel a booked ticket', () => {
+    // Ensure the page is fully loaded
+    cy.wait(2000);
+
+    // Navigate to Cancel Booked Tickets page
+    cy.get('a.nav-link').contains('Print Ticket').click({force: true});
+    cy.url().should('include', 'pnr.php');
+
+    // Fill out the PNR form and submit
+    cy.get('input[name="pnr"]').type('1669050'); 
+    cy.get('input[type="submit"]').click();
+
+    // Submit the cancellation form
+    cy.get('input[name="pnr"]').type('1669050'); 
+    cy.get('input[type="submit"]').click();
+
+    cy.url().should('include', 'cancel_booked_tickets_form_handler.php');
+    cy.contains('Boarding Pass.').should('be.visible');
+  });
+
+});
